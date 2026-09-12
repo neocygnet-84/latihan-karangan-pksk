@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Latihan Karangan PKSK</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#14213B;
+  --ink-soft:#3D4A6B;
+  --paper:#FBF9F4;
+  --paper-2:#F1ECE0;
+  --line:#E1D9C8;
+  --gold:#C98A2C;
+  --gold-soft:#F3E1BC;
+  --teal:#0E6E63;
+  --teal-soft:#DCEEE9;
+  --red:#B8452F;
+  --red-soft:#F5DFD8;
+  --white:#fff;
+  --shadow:0 1px 2px rgba(20,33,59,.06);
+  --radius:14px;
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:'Inter',system-ui,sans-serif;background:var(--paper);color:var(--ink);-webkit-tap-highlight-color:transparent;}
+h1,h2,h3,.serif{font-family:'Fraunces',serif;}
+button{font-family:inherit;cursor:pointer;}
+#app{max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;background:var(--paper);position:relative;}
+.screen{display:none;flex:1;padding:20px 18px 90px;animation:fadein .25s ease;}
+.screen.active{display:block;}
+@keyframes fadein{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+/* Top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--line);background:var(--white);position:sticky;top:0;z-index:5;}
+.topbar .brand{font-family:'Fraunces',serif;font-weight:700;font-size:17px;color:var(--ink);}
+.pill{display:inline-flex;align-items:center;gap:5px;background:var(--gold-soft);color:#7A5416;padding:5px 10px;border-radius:99px;font-size:13px;font-weight:600;}
+.pill.streak{background:var(--red-soft);color:#8C3A26;}
+
+/* Buttons */
+.btn{border:none;border-radius:12px;padding:14px 18px;font-weight:700;font-size:15px;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .1s;}
+.btn:active{transform:scale(.98);}
+.btn-primary{background:var(--ink);color:var(--white);}
+.btn-gold{background:var(--gold);color:var(--white);}
+.btn-outline{background:var(--white);color:var(--ink);border:1.5px solid var(--line);}
+.btn-teal{background:var(--teal);color:var(--white);}
+.btn-sm{padding:9px 14px;font-size:13px;width:auto;border-radius:10px;}
+.btn-row{display:flex;gap:10px;}
+
+/* Cards */
+.card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-bottom:14px;box-shadow:var(--shadow);}
+.card h3{margin:0 0 8px;font-size:16px;}
+.muted{color:var(--ink-soft);font-size:13.5px;line-height:1.5;}
+.label-tag{font-size:11.5px;font-weight:700;letter-spacing:.02em;color:var(--teal);background:var(--teal-soft);padding:3px 8px;border-radius:6px;display:inline-block;margin-bottom:8px;}
+.label-tag.warn{color:#8C3A26;background:var(--red-soft);}
+
+/* progress bar */
+.bar-track{background:var(--paper-2);border-radius:99px;height:9px;overflow:hidden;}
+.bar-fill{height:100%;background:linear-gradient(90deg,var(--teal),#12A08F);border-radius:99px;transition:width .5s ease;}
+
+/* dimension row */
+.dim-row{display:flex;align-items:center;gap:10px;margin:9px 0;}
+.dim-row .dim-label{width:110px;font-size:13px;font-weight:600;flex-shrink:0;}
+.dim-row .dim-pct{width:38px;text-align:right;font-size:13px;font-weight:700;color:var(--ink-soft);}
+
+textarea,input[type=text]{width:100%;font-family:inherit;font-size:15.5px;padding:13px;border:1.5px solid var(--line);border-radius:10px;background:var(--white);resize:vertical;color:var(--ink);}
+textarea:focus,input:focus{outline:none;border-color:var(--teal);}
+
+/* bottom nav */
+.navbar{position:sticky;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:8px 4px calc(8px + env(safe-area-inset-bottom));z-index:10;}
+.navitem{display:flex;flex-direction:column;align-items:center;gap:2px;color:#9AA3B8;background:none;border:none;font-size:10.5px;font-weight:600;padding:4px 6px;flex:1;}
+.navitem.active{color:var(--ink);}
+.navitem .ic{font-size:19px;}
+
+/* choice chips */
+.chip{display:inline-block;padding:10px 14px;border:1.5px solid var(--line);border-radius:10px;margin:4px 6px 4px 0;background:var(--white);font-size:14px;font-weight:600;}
+.chip.selected{border-color:var(--teal);background:var(--teal-soft);}
+.chip-grid{display:flex;flex-wrap:wrap;}
+
+.sentence-fb{padding:2px 3px;border-radius:4px;}
+.sentence-fb.good{background:#DCF3E6;}
+.sentence-fb.improve{background:#FCEFCB;}
+.sentence-fb.fix{background:#FADBD3;}
+
+.xp-toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:99px;font-weight:700;font-size:14px;z-index:50;box-shadow:0 8px 20px rgba(0,0,0,.2);opacity:0;pointer-events:none;transition:opacity .25s, top .25s;}
+.xp-toast.show{opacity:1;top:22px;}
+
+.coach-box{background:var(--gold-soft);border:1px solid #E9CE97;border-radius:12px;padding:13px 14px;font-size:14px;line-height:1.5;}
+.coach-box b{color:#7A5416;}
+
+.step-dots{display:flex;gap:6px;justify-content:center;margin:14px 0;}
+.step-dots span{width:8px;height:8px;border-radius:50%;background:var(--line);}
+.step-dots span.on{background:var(--teal);width:22px;border-radius:5px;transition:.2s;}
+
+.essay-status{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+.essay-status .tag{font-size:12px;font-weight:700;padding:5px 9px;border-radius:8px;background:var(--paper-2);}
+.essay-status .tag.g{background:#DCF3E6;color:#1E6B3F;}
+.essay-status .tag.y{background:#FCEFCB;color:#8A6511;}
+.essay-status .tag.r{background:#FADBD3;color:#8C3A26;}
+
+.spinner{width:16px;height:16px;border:2.5px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.hidden{display:none !important;}
+hr.div{border:none;border-top:1px solid var(--line);margin:14px 0;}
+.badge-grid{display:flex;flex-wrap:wrap;gap:8px;}
+.badge{background:var(--paper-2);border-radius:10px;padding:8px 10px;font-size:12px;font-weight:600;text-align:center;width:78px;}
+.badge .ic{font-size:22px;display:block;margin-bottom:2px;}
+.badge.locked{opacity:.35;}
+.small-link{background:none;border:none;color:var(--teal-soft-text,var(--teal));font-weight:700;font-size:13px;text-decoration:underline;padding:0;}
+.offline-note{font-size:12px;color:#8C3A26;background:var(--red-soft);padding:8px 10px;border-radius:8px;margin-top:8px;}
+.week-bars{display:flex;align-items:flex-end;gap:10px;height:90px;margin:10px 0;}
+.week-bars .wb{flex:1;background:linear-gradient(180deg,#12A08F,var(--teal));border-radius:6px 6px 0 0;position:relative;}
+.week-bars .wb span{position:absolute;top:-18px;left:0;right:0;text-align:center;font-size:11px;font-weight:700;color:var(--ink-soft);}
+.week-bars .lbl{text-align:center;font-size:11px;color:var(--ink-soft);margin-top:4px;}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ============ SPLASH ============ -->
+  <div class="screen active" id="screen-splash">
+    <div style="min-height:70vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:18px;">
+      <div style="font-size:44px;">🎯</div>
+      <h1 class="serif" style="font-size:26px;margin:0;">MISI PKSK</h1>
+      <p class="muted" style="font-size:15px;max-width:320px;">Adakah kamu bersedia menjadi <b>Penulis Hebat</b>?<br><br>Tak perlu pandai sekarang. Kita akan berlatih sedikit demi sedikit.</p>
+      <button class="btn btn-gold" style="max-width:260px;" onclick="Nav.go('splash2')">🚀 MULA MISI</button>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-splash2">
+    <div style="min-height:70vh;display:flex;flex-direction:column;justify-content:center;gap:16px;">
+      <h2 class="serif" style="text-align:center;">Apakah tahap keyakinan kamu menulis karangan?</h2>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <button class="btn btn-outline" onclick="App.setConfidence('kurang')">😰 Saya kurang yakin</button>
+        <button class="btn btn-outline" onclick="App.setConfidence('sedikit')">🙂 Saya boleh sedikit</button>
+        <button class="btn btn-outline" onclick="App.setConfidence('agak')">😎 Saya agak yakin</button>
+        <button class="btn btn-outline" onclick="App.setConfidence('suka')">🔥 Saya memang suka menulis</button>
+      </div>
+      <p class="muted" style="text-align:center;font-size:12.5px;">*Ini bukan markah akademik — hanya untuk kami kenali kamu.</p>
+    </div>
+  </div>
+
+  <!-- ============ DIAGNOSTIC ============ -->
+  <div class="screen" id="screen-diag">
+    <div class="topbar" style="margin:-20px -18px 16px;"><div class="brand">Diagnostik Ringkas</div><div class="pill" id="diag-step-pill">1/5</div></div>
+    <div class="step-dots" id="diag-dots"></div>
+    <div class="card">
+      <div class="label-tag" id="diag-tasklabel">TUGASAN 1 — FAHAM TAJUK</div>
+      <h3 id="diag-topic">Faedah bersukan kepada murid.</h3>
+      <p class="muted" id="diag-question">Apakah perkara utama yang perlu kamu bincangkan?</p>
+      <textarea id="diag-input" rows="3" placeholder="Taip jawapan kamu di sini..."></textarea>
+    </div>
+    <button class="btn btn-primary" id="diag-next-btn" onclick="Diagnostic.next()">Seterusnya</button>
+  </div>
+
+  <div class="screen" id="screen-diag-loading">
+    <div style="min-height:70vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;">
+      <div class="spinner" style="border-top-color:var(--ink);border-color:rgba(20,33,59,.15);width:28px;height:28px;"></div>
+      <p class="muted">Jurulatih AI sedang menyemak jawapan kamu...</p>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-diag-result">
+    <h2 class="serif">PROFIL PENULIS KAMU</h2>
+    <div class="card" id="diag-result-card"></div>
+    <div class="card coach-box" id="diag-focus-box"></div>
+    <button class="btn btn-gold" onclick="App.enterHome()">Teruskan ke Misi Harian →</button>
+  </div>
+
+  <!-- ============ HOME ============ -->
+  <div class="screen" id="screen-home">
+    <div class="topbar" style="margin:-20px -18px 16px;">
+      <div class="brand">📝 PKSK Karangan</div>
+      <div style="display:flex;gap:6px;">
+        <div class="pill streak">🔥 <span id="home-streak">0</span></div>
+        <div class="pill">⭐ <span id="home-xp">0</span></div>
+      </div>
+    </div>
+
+    <div class="card" style="background:var(--ink);color:#fff;border:none;">
+      <div class="label-tag" style="background:rgba(255,255,255,.15);color:#fff;">🎯 MISI HARI INI</div>
+      <h3 style="color:#fff;" id="home-mission-title">Bina satu perenggan menggunakan I-H-C-K.</h3>
+      <div class="bar-track" style="background:rgba(255,255,255,.2);margin-top:10px;"><div class="bar-fill" id="home-mission-bar" style="width:0%;background:var(--gold);"></div></div>
+      <button class="btn btn-gold" style="margin-top:12px;" onclick="App.startTodayMission()">🚀 Mula Misi</button>
+    </div>
+
+    <div class="card" id="home-weakness-card"></div>
+
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-outline" style="flex-direction:column;gap:4px;padding:16px 8px;" onclick="Nav.go('essay')"><span style="font-size:20px;">📝</span>Tulis Karangan</button>
+      <button class="btn btn-outline" style="flex-direction:column;gap:4px;padding:16px 8px;" onclick="Paragraph.startRandom()"><span style="font-size:20px;">🧠</span>Latih Kelemahan</button>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:10px;">
+      <button class="btn btn-outline" style="flex-direction:column;gap:4px;padding:16px 8px;" onclick="Nav.go('bank')"><span style="font-size:20px;">📚</span>Bank Soalan</button>
+      <button class="btn btn-outline" style="flex-direction:column;gap:4px;padding:16px 8px;" onclick="Nav.go('exam')"><span style="font-size:20px;">🏆</span>Simulasi PKSK</button>
+    </div>
+
+    <hr class="div">
+    <h3 class="serif">📈 Kemajuan Ringkas</h3>
+    <div class="card" id="home-progress-card"></div>
+  </div>
+
+  <!-- ============ PARAGRAPH BUILDER (I-H-C-K) ============ -->
+  <div class="screen" id="screen-paragraph">
+    <div class="topbar" style="margin:-20px -18px 16px;"><button class="small-link" onclick="Nav.go('home')">← Kembali</button><div class="pill">💡🧠📌🎯 I-H-C-K</div></div>
+    <div class="label-tag">TOPIK</div>
+    <h3 class="serif" id="para-topic" style="margin-top:0;"></h3>
+    <div class="step-dots" id="para-dots"></div>
+
+    <div id="para-steps"></div>
+
+    <div id="para-idk-wrap" style="text-align:center;margin-top:6px;">
+      <button class="small-link" onclick="Paragraph.dontKnow()">🆘 Saya tak tahu nak tulis apa</button>
+    </div>
+
+    <div id="para-idk-panel" class="card hidden"></div>
+
+    <div class="btn-row" style="margin-top:14px;">
+      <button class="btn btn-outline" id="para-back-btn" onclick="Paragraph.back()">← Balik</button>
+      <button class="btn btn-primary" id="para-next-btn" onclick="Paragraph.next()">Seterusnya →</button>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-para-result">
+    <div class="topbar" style="margin:-20px -18px 16px;"><div class="brand">Perenggan Kamu</div></div>
+    <div class="card"><p id="para-final-text" style="line-height:1.7;font-size:15px;"></p></div>
+    <div id="para-feedback-area"></div>
+    <button class="btn btn-primary" onclick="App.backToHomeFromMission()" style="margin-top:6px;">Selesai →</button>
+  </div>
+
+  <!-- ============ FULL ESSAY EDITOR ============ -->
+  <div class="screen" id="screen-essay">
+    <div class="topbar" style="margin:-20px -18px 16px;"><button class="small-link" onclick="Nav.go('home')">← Kembali</button><div class="pill" id="essay-wordcount">0 patah perkataan</div></div>
+    <div class="label-tag">TAJUK KARANGAN</div>
+    <h3 class="serif" id="essay-topic" style="margin-top:0;"></h3>
+    <button class="btn-sm btn-outline" onclick="Bank.randomiseForEssay()" style="margin-bottom:12px;">🎲 Tukar Topik</button>
+
+    <div class="essay-status" id="essay-status-tags"></div>
+
+    <textarea id="essay-editor" rows="14" placeholder="Mula menulis di sini... Ingat: Pendahuluan → Isi (I-H-C-K) → Penutup" oninput="Essay.onInput()"></textarea>
+    <div class="muted" style="margin-top:6px;" id="essay-saved-note">Draf disimpan secara automatik.</div>
+
+    <button class="btn btn-gold" style="margin-top:14px;" id="essay-check-btn" onclick="Essay.analyse()">🔎 Semak Karangan (Skor Latihan AI)</button>
+  </div>
+
+  <div class="screen" id="screen-essay-loading">
+    <div style="min-height:60vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;">
+      <div class="spinner" style="border-top-color:var(--ink);border-color:rgba(20,33,59,.15);width:28px;height:28px;"></div>
+      <p class="muted">Jurulatih Karangan sedang menganalisis karangan kamu...</p>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-essay-feedback">
+    <div class="topbar" style="margin:-20px -18px 16px;"><div class="brand">Analisis Karangan</div></div>
+    <div id="essay-feedback-content"></div>
+    <button class="btn btn-primary" style="margin-top:8px;" onclick="Nav.go('home');App.refreshHome();">Kembali ke Misi →</button>
+  </div>
+
+  <!-- ============ QUESTION BANK ============ -->
+  <div class="screen" id="screen-bank">
+    <div class="topbar" style="margin:-20px -18px 16px;"><div class="brand">📚 Bank Soalan</div></div>
+    <p class="muted">Topik latihan disusun mengikut tema. Ini ialah <b>panduan latihan</b>, bukan semestinya soalan rasmi PKSK.</p>
+    <div id="bank-list"></div>
+  </div>
+
+  <!-- ============ EXAM MODE ============ -->
+  <div class="screen" id="screen-exam">
+    <div class="topbar" style="margin:-20px -18px 16px;"><button class="small-link" onclick="Nav.go('home')">← Kembali</button><div class="brand">🏆 Simulasi PKSK</div></div>
+    <div class="card">
+      <p class="muted">Dalam mod ini, Jurulatih Karangan akan berehat dahulu. Tiada hint. Tiada bantuan AI semasa menulis. Tulis seperti dalam peperiksaan sebenar.</p>
+      <div id="exam-timer-display" style="font-size:32px;font-weight:800;text-align:center;font-family:'Fraunces',serif;margin:10px 0;">40:00</div>
+      <div id="exam-topic-box" class="label-tag" style="display:block;"></div>
+      <h3 id="exam-topic-title"></h3>
+      <button class="btn btn-teal" id="exam-start-btn" onclick="Exam.start()">Mula Simulasi (40 minit)</button>
+    </div>
+    <textarea id="exam-editor" class="hidden" rows="16" placeholder="Tulis karangan kamu di sini..." oninput="Exam.onInput()"></textarea>
+    <button class="btn btn-gold hidden" id="exam-submit-btn" onclick="Exam.submit()">Hantar Karangan</button>
+  </div>
+
+  <!-- ============ HISTORY ============ -->
+  <div class="screen" id="screen-history">
+    <div class="topbar" style="margin:-20px -18px 16px;"><div class="brand">🗂️ Sejarah Karangan</div></div>
+    <div id="history-list"></div>
+  </div>
+
+  <!-- ============ PARENT DASHBOARD ============ -->
+  <div class="screen" id="screen-parent">
+    <div class="topbar" style="margin:-20px -18px 16px;"><div class="brand">👨‍👩‍👦 Mod Ibu Bapa</div></div>
+    <div id="parent-content"></div>
+  </div>
+
+  <!-- ============ MORE / PROGRAM ============ -->
+  <div class="screen" id="screen-more">
+    <div class="topbar" style="margin:-20px -18px 16px;"><div class="brand">Lagi</div></div>
+    <div class="card" onclick="Nav.go('program')" style="cursor:pointer;">
+      <h3>🔥 Misi 30 Hari</h3>
+      <p class="muted">Program latihan berstruktur. <span class="label-tag" style="margin:0;">Panduan latihan</span></p>
+    </div>
+    <div class="card" onclick="Nav.go('history')" style="cursor:pointer;"><h3>🗂️ Sejarah Karangan</h3><p class="muted">Lihat karangan lepas kamu.</p></div>
+    <div class="card" onclick="Nav.go('parent')" style="cursor:pointer;"><h3>👨‍👩‍👦 Mod Ibu Bapa</h3><p class="muted">Laporan mingguan untuk ibu bapa.</p></div>
+    <div class="card" onclick="App.openErrorJournal()" style="cursor:pointer;"><h3>📖 Buku Kesilapan Saya</h3><p class="muted">Kesilapan yang kamu telah baiki.</p></div>
+    <div class="card">
+      <h3>🧠 Kemahiran Sendiri</h3>
+      <p class="muted" id="more-independence-text">—</p>
+    </div>
+    <div class="card">
+      <h3>Tetapan</h3>
+      <button class="btn btn-outline" onclick="App.resetProgress()">Set Semula Data Latihan</button>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-program">
+    <div class="topbar" style="margin:-20px -18px 16px;"><button class="small-link" onclick="Nav.go('more')">← Kembali</button><div class="brand">🔥 Misi 30 Hari</div></div>
+    <p class="muted"><span class="label-tag" style="margin:0;">Panduan latihan</span> — jadual ini disesuaikan mengikut kelemahan kamu, bukan struktur rasmi PKSK.</p>
+    <div id="program-list"></div>
+  </div>
+
+  <div class="screen" id="screen-errorjournal">
+    <div class="topbar" style="margin:-20px -18px 16px;"><button class="small-link" onclick="Nav.go('more')">← Kembali</button><div class="brand">📖 Buku Kesilapan Saya</div></div>
+    <div id="errorjournal-list"></div>
+  </div>
+
+  <!-- Nav bar -->
+  <div class="navbar" id="navbar">
+    <button class="navitem" data-tab="home" onclick="Nav.go('home')"><span class="ic">🏠</span>Rumah</button>
+    <button class="navitem" data-tab="essay" onclick="Nav.go('essay')"><span class="ic">📝</span>Tulis</button>
+    <button class="navitem" data-tab="bank" onclick="Nav.go('bank')"><span class="ic">📚</span>Soalan</button>
+    <button class="navitem" data-tab="exam" onclick="Nav.go('exam')"><span class="ic">🏆</span>Simulasi</button>
+    <button class="navitem" data-tab="more" onclick="Nav.go('more')"><span class="ic">⋯</span>Lagi</button>
+  </div>
+
+  <div class="xp-toast" id="xp-toast"></div>
+</div>
+
+<script>
+/* ============================================================
+   STORAGE LAYER (with in-memory fallback if window.storage fails)
+   ============================================================ */
+const Store = (() => {
+  let memory = {};
+  let usable = true;
+  async function get(key, fallback=null){
+    try{
+      const r = await window.storage.get(key, false);
+      return r ? JSON.parse(r.value) : fallback;
+    }catch(e){ return (key in memory) ? memory[key] : fallback; }
+  }
+  async function set(key, value){
+    memory[key] = value;
+    try{ await window.storage.set(key, JSON.stringify(value), false); }catch(e){ usable=false; }
+  }
+  return {get, set};
+})();
+
+/* ============================================================
+   AI SERVICE (EssayCoachService) — calls Claude, with heuristic fallback
+   ============================================================ */
+const EssayCoachService = (() => {
+  async function callClaude(system, user){
+    try{
+      const resp = await fetch("https://api.anthropic.com/v1/messages", {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({
+          model:"claude-sonnet-4-6",
+          max_tokens:1000,
+          system: system,
+          messages:[{role:"user", content:user}]
+        })
+      });
+      const data = await resp.json();
+      const text = (data.content||[]).map(c=>c.text||"").join("\n");
+      return text;
+    }catch(e){
+      console.error("AI call failed", e);
+      return null;
+    }
+  }
+  function parseJSON(text){
+    if(!text) return null;
+    try{
+      const clean = text.replace(/```json/g,"").replace(/```/g,"").trim();
+      return JSON.parse(clean);
+    }catch(e){ return null; }
+  }
+
+  const SYS_BASE = "Anda ialah 'Jurulatih Karangan', jurulatih penulisan Bahasa Melayu yang mesra untuk murid Tahun 6 Malaysia yang bersedia untuk peperiksaan PKSK (kemasukan Tingkatan 1). Gaya bahasa: Bahasa Melayu Malaysia yang natural, mesra, memberi galakan, tidak formal seperti Bahasa Indonesia. JANGAN sesekali tulis semula karangan murid sepenuhnya untuk mereka — tugas anda ialah membimbing, bukan menulis. JANGAN gunakan perkataan 'salah', 'lemah', atau 'tidak bagus' — guna nada positif seperti 'hampir tepat', 'boleh dikuatkan lagi'. Jawab HANYA dalam format JSON tulen tanpa teks tambahan, tanpa ```.";
+
+  async function evaluateDiagnosticAnswer(taskLabel, topic, question, answer){
+    const user = `Tugasan diagnostik: ${taskLabel}\nTajuk karangan: "${topic}"\nSoalan: "${question}"\nJawapan murid: "${answer}"\n\nBerikan penilaian ringkas dalam JSON dengan struktur:\n{"score": <0-100 integer, kualiti jawapan untuk tugasan ini>, "comment": "<1 ayat pendek galakan/maklumat, Bahasa Melayu>"}`;
+    const raw = await callClaude(SYS_BASE, user);
+    const parsed = parseJSON(raw);
+    if(parsed && typeof parsed.score === 'number') return parsed;
+    // fallback heuristic
+    const len = (answer||"").trim().split(/\s+/).filter(Boolean).length;
+    const score = Math.max(20, Math.min(90, len*8));
+    return {score, comment:"Diperiksa secara ringkas (mod luar talian)."};
+  }
+
+  async function analyseParagraph(topic, ihck){
+    const user = `Topik: "${topic}"\nMurid membina perenggan menggunakan kerangka ISI-HURAIAN-CONTOH-KESAN:\nISI: ${ihck.isi}\nHURAIAN: ${ihck.huraian}\nCONTOH: ${ihck.contoh}\nKESAN: ${ihck.kesan}\n\nBerikan analisis dalam JSON:\n{\n "sentences":[{"part":"isi|huraian|contoh|kesan","label":"good|improve|fix","comment":"<komen ringkas>"}],\n "strengths":["...","..."],\n "improvements":["...","..."],\n "next_challenge":"<satu cadangan latihan seterusnya, ringkas>",\n "xp": <integer antara 20-50>\n}\nKomen dalam Bahasa Melayu Malaysia, nada positif dan membina.`;
+    const raw = await callClaude(SYS_BASE, user);
+    const parsed = parseJSON(raw);
+    if(parsed) return parsed;
+    return {
+      sentences:[
+        {part:"isi", label: ihck.isi.length>15?"good":"improve", comment:"Isi sudah kelihatan, cuba pastikan ia berkaitan terus dengan tajuk."},
+        {part:"huraian", label: ihck.huraian.length>25?"good":"improve", comment:"Cuba huraikan sedikit lagi — mengapa perkara ini penting?"},
+        {part:"contoh", label: ihck.contoh.length>10?"good":"fix", comment:"Tambahkan contoh yang lebih khusus."},
+        {part:"kesan", label: ihck.kesan.length>10?"good":"improve", comment:"Kesan boleh dinyatakan dengan lebih jelas."}
+      ],
+      strengths:["Kamu sudah cuba mengikut kerangka I-H-C-K.","Ayat kamu boleh difahami.","Idea kamu berkaitan dengan tajuk."],
+      improvements:["Kuatkan huraian.","Tambah contoh khusus.","Elakkan pengulangan perkataan."],
+      next_challenge:"Cuba huraikan isi ini dengan satu ayat sebab tambahan.",
+      xp:30,
+      offline:true
+    };
+  }
+
+  async function analyseEssay(topic, text){
+    const user = `Tajuk karangan PKSK: "${topic}"\nKarangan murid Tahun 6:\n"""\n${text}\n"""\n\nBerikan analisis dalam JSON:\n{\n "skor_latihan_ai": <0-100 integer, skor latihan keseluruhan — bukan skor rasmi>,\n "dimensi": {"idea":<0-100>,"huraian":<0-100>,"ayat":<0-100>,"bahasa":<0-100>,"struktur":<0-100>},\n "kelebihan": ["...","...","..."],\n "penambahbaikan": ["...","...","..."],\n "cabaran_seterusnya": "<satu cadangan latihan spesifik>",\n "kesalahan": [{"asal":"<frasa/ayat asal>","cadangan":"<pembetulan>","sebab":"<sebab ringkas>"}],\n "xp": <integer antara 60-120>\n}\nHad kesalahan kepada maksimum 3 contoh paling penting. Nada mesti positif dan menggalakkan, dalam Bahasa Melayu Malaysia.`;
+    const raw = await callClaude(SYS_BASE, user);
+    const parsed = parseJSON(raw);
+    if(parsed) return parsed;
+    const words = text.trim().split(/\s+/).filter(Boolean).length;
+    const base = Math.max(35, Math.min(85, 30 + words/6));
+    return {
+      skor_latihan_ai: Math.round(base),
+      dimensi:{idea:Math.round(base+5), huraian:Math.round(base-8), ayat:Math.round(base), bahasa:Math.round(base-3), struktur:Math.round(base+2)},
+      kelebihan:["Karangan kamu ada struktur pendahuluan, isi dan penutup.","Panjang karangan sudah munasabah.","Kamu sudah cuba menulis mengikut tajuk."],
+      penambahbaikan:["Kuatkan huraian pada setiap isi.","Semak pengulangan perkataan.","Tambah contoh yang lebih khusus."],
+      cabaran_seterusnya:"Cuba tulis semula satu perenggan isi dengan huraian yang lebih kuat.",
+      kesalahan:[],
+      xp:70,
+      offline:true
+    };
+  }
+
+  async function generateHint(topic, level){
+    const user = `Topik: "${topic}". Murid memerlukan bantuan menjana idea, tahap hint ${level} (1=hint kecil,2=arah,3=contoh konkrit). Beri SATU ayat hint sahaja dalam JSON: {"hint":"..."}`;
+    const raw = await callClaude(SYS_BASE, user);
+    const parsed = parseJSON(raw);
+    if(parsed && parsed.hint) return parsed.hint;
+    const fallback = {1:"Fikirkan satu contoh yang berkaitan dengan kehidupan seharian kamu.",2:"Contoh boleh berkaitan dengan pengalaman di sekolah atau rumah.",3:"Sebagai contoh, murid boleh mengambil bahagian dalam aktiviti berkaitan setiap minggu."};
+    return fallback[level] || fallback[1];
+  }
+
+  async function parentMessage(stats){
+    const user = `Data mingguan murid: ${JSON.stringify(stats)}. Tulis SATU mesej pendek (2-3 ayat) untuk ibu bapa dalam Bahasa Melayu Malaysia yang mesra, memberi galakan, fokus kepada peningkatan bukan kesempurnaan. Balas dalam JSON: {"message":"..."}`;
+    const raw = await callClaude(SYS_BASE, user);
+    const parsed = parseJSON(raw);
+    if(parsed && parsed.message) return parsed.message;
+    return `Syabas! Minggu ini anak anda menyiapkan ${stats.essaysThisWeek} latihan karangan. Fokus kepada peningkatan, bukan kesempurnaan.`;
+  }
+
+  return {evaluateDiagnosticAnswer, analyseParagraph, analyseEssay, generateHint, parentMessage};
+})();
+
+/* ============================================================
+   QUESTION BANK
+   ============================================================ */
+const QUESTION_BANK = [
+  {topic:"Faedah bersukan kepada murid.", tema:"sukan", tahap:"Mudah", kemahiran:["idea","huraian"]},
+  {topic:"Faedah membaca buku kepada pelajar.", tema:"membaca", tahap:"Mudah", kemahiran:["idea","kosa kata"]},
+  {topic:"Kepentingan menjaga kebersihan sekolah.", tema:"kebersihan", tahap:"Mudah", kemahiran:["huraian","contoh"]},
+  {topic:"Peranan ibu bapa dalam kejayaan anak-anak.", tema:"keluarga", tahap:"Sederhana", kemahiran:["idea","struktur"]},
+  {topic:"Kepentingan disiplin dalam kalangan murid.", tema:"disiplin", tahap:"Sederhana", kemahiran:["huraian","kesan"]},
+  {topic:"Faedah menyertai aktiviti kokurikulum.", tema:"sekolah", tahap:"Sederhana", kemahiran:["idea","contoh"]},
+  {topic:"Kesan penggunaan telefon pintar secara berlebihan.", tema:"teknologi", tahap:"Sederhana", kemahiran:["idea","kesan"]},
+  {topic:"Langkah-langkah menjaga alam sekitar.", tema:"alam sekitar", tahap:"Sederhana", kemahiran:["idea","huraian"]},
+  {topic:"Kepentingan amalan hidup sihat dalam kehidupan seharian.", tema:"kesihatan", tahap:"Sederhana", kemahiran:["struktur","huraian"]},
+  {topic:"Kepentingan sikap bekerjasama dalam masyarakat.", tema:"masyarakat", tahap:"Sederhana", kemahiran:["idea","contoh"]},
+  {topic:"Cara-cara memupuk semangat patriotisme dalam kalangan remaja.", tema:"patriotisme", tahap:"Cabaran", kemahiran:["huraian","bahasa"]},
+  {topic:"Ciri-ciri seorang pemimpin yang baik.", tema:"kepimpinan", tahap:"Cabaran", kemahiran:["idea","struktur"]},
+  {topic:"Kepentingan nilai murni dalam kehidupan seharian.", tema:"nilai murni", tahap:"Sederhana", kemahiran:["idea","huraian"]},
+  {topic:"Langkah-langkah menjaga keselamatan diri semasa berada di luar rumah.", tema:"keselamatan", tahap:"Sederhana", kemahiran:["contoh","kesan"]},
+  {topic:"Kepentingan memupuk kreativiti dalam kalangan murid.", tema:"kreativiti", tahap:"Cabaran", kemahiran:["idea","bahasa"]},
+  {topic:"Kemahiran yang perlu ada pada murid untuk menghadapi masa depan.", tema:"kemahiran masa depan", tahap:"Cabaran", kemahiran:["struktur","huraian"]},
+  {topic:"Kepentingan mengekalkan budaya dan tradisi Malaysia.", tema:"budaya", tahap:"Cabaran", kemahiran:["huraian","bahasa"]},
+  {topic:"Kebaikan dan keburukan penggunaan media sosial dalam kalangan remaja.", tema:"media sosial", tahap:"Cabaran", kemahiran:["idea","struktur"]},
+  {topic:"Faedah kecerdasan buatan (AI) dalam pembelajaran murid.", tema:"kecerdasan buatan", tahap:"Cabaran", kemahiran:["idea","kesan"]},
+  {topic:"Kepentingan semangat kerjasama antara rakan sekelas.", tema:"persahabatan", tahap:"Mudah", kemahiran:["idea","contoh"]},
+  {topic:"Kepentingan pendidikan dalam membentuk generasi masa depan.", tema:"pendidikan", tahap:"Sederhana", kemahiran:["huraian","struktur"]},
+  {topic:"Teknologi memberikan banyak manfaat kepada murid. Namun begitu, penggunaannya secara berlebihan boleh mendatangkan kesan buruk. Bincangkan.", tema:"teknologi", tahap:"Boss", kemahiran:["idea","huraian","struktur"]},
+];
+
+/* ============================================================
+   GLOBAL STATE
+   ============================================================ */
+let PROFILE = null;
+let ESSAYS = [];
+let ERRORJ = [];
+let CURRENT = {}; // scratch state for in-progress activities
+
+const DEFAULT_PROFILE = () => ({
+  nickname:"Penulis",
+  confidence:null,
+  xp:0,
+  streak:0,
+  lastActiveDate:null,
+  diagnosticDone:false,
+  dims:{idea:50,huraian:50,ayat:50,bahasa:50,struktur:50},
+  badges:[],
+  independentCount:0,
+  assistedCount:0,
+  essaysCompleted:0,
+  paragraphsCompleted:0,
+  weeklyScores:[]
+});
+
+function todayStr(){ return new Date().toISOString().slice(0,10); }
+
+async function loadState(){
+  PROFILE = await Store.get('profile', null) || DEFAULT_PROFILE();
+  ESSAYS = await Store.get('essays', []);
+  ERRORJ = await Store.get('errorjournal', []);
+}
+async function saveProfile(){ await Store.set('profile', PROFILE); }
+async function saveEssays(){ await Store.set('essays', ESSAYS); }
+async function saveErrorJ(){ await Store.set('errorjournal', ERRORJ); }
+
+function updateStreak(){
+  const t = todayStr();
+  if(PROFILE.lastActiveDate === t) return;
+  const y = new Date(); y.setDate(y.getDate()-1);
+  const yStr = y.toISOString().slice(0,10);
+  if(PROFILE.lastActiveDate === yStr){ PROFILE.streak += 1; }
+  else { PROFILE.streak = 1; }
+  PROFILE.lastActiveDate = t;
+  saveProfile();
+}
+
+function xpToast(amount, label){
+  const el = document.getElementById('xp-toast');
+  el.textContent = `+${amount} XP ${label||''}`;
+  el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'), 1600);
+}
+
+async function awardXP(amount, label, opts={}){
+  PROFILE.xp += amount;
+  if(opts.independent) PROFILE.independentCount = (PROFILE.independentCount||0)+1;
+  else if(opts.assisted) PROFILE.assistedCount = (PROFILE.assistedCount||0)+1;
+  checkBadges();
+  await saveProfile();
+  xpToast(amount, label);
+}
+
+function checkBadges(){
+  const b = new Set(PROFILE.badges);
+  if(PROFILE.paragraphsCompleted>=1) b.add('idea-explorer');
+  if(PROFILE.paragraphsCompleted>=10) b.add('huraian-hero');
+  if(PROFILE.essaysCompleted>=1) b.add('karangan-builder');
+  if(PROFILE.streak>=7) b.add('streak-7');
+  if(PROFILE.streak>=30) b.add('champion-30');
+  if(PROFILE.xp>=1000) b.add('ayat-power');
+  PROFILE.badges = Array.from(b);
+}
+
+const BADGE_META = {
+  'idea-explorer':{ic:'🏅',label:'Idea Explorer'},
+  'huraian-hero':{ic:'🏅',label:'Huraian Hero'},
+  'karangan-builder':{ic:'🏅',label:'Karangan Builder'},
+  'streak-7':{ic:'🏅',label:'7-Day Streak'},
+  'champion-30':{ic:'🏅',label:'30-Day Champion'},
+  'ayat-power':{ic:'🏅',label:'Ayat Power'}
+};
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+const Nav = (() => {
+  const navVisible = new Set(['home','essay','bank','exam','history','parent','more','program','errorjournal']);
+  function go(screen){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    const el = document.getElementById('screen-'+screen);
+    if(el) el.classList.add('active');
+    const nb = document.getElementById('navbar');
+    nb.style.display = navVisible.has(screen) ? 'flex' : 'none';
+    document.querySelectorAll('.navitem').forEach(n=>n.classList.toggle('active', n.dataset.tab===screen));
+    if(screen==='home') App.refreshHome();
+    if(screen==='bank') Bank.render();
+    if(screen==='history') History.render();
+    if(screen==='parent') Parent.render();
+    if(screen==='more') App.renderMore();
+    if(screen==='program') App.renderProgram();
+    if(screen==='errorjournal') App.renderErrorJournal();
+    window.scrollTo(0,0);
+  }
+  return {go};
+})();
+
+/* ============================================================
+   APP (top level flows)
+   ============================================================ */
+const App = (() => {
+  async function setConfidence(level){
+    PROFILE.confidence = level;
+    await saveProfile();
+    Diagnostic.start();
+  }
+
+  function enterHome(){
+    Nav.go('home');
+  }
+
+  async function startTodayMission(){
+    // pick topic weighted toward weakest dimension
+    Paragraph.startRandom();
+  }
+
+  function backToHomeFromMission(){
+    Nav.go('home');
+  }
+
+  async function refreshHome(){
+    updateStreak();
+    document.getElementById('home-xp').textContent = PROFILE.xp;
+    document.getElementById('home-streak').textContent = PROFILE.streak;
+    const weakest = weakestDim();
+    document.getElementById('home-mission-title').textContent =
+      `Bina satu perenggan menggunakan I-H-C-K, fokus: ${DIM_LABEL[weakest]}.`;
+    document.getElementById('home-mission-bar').style.width = Math.min(100, (PROFILE.dims[weakest]||50)) + '%';
+
+    const wc = document.getElementById('home-weakness-card');
+    wc.innerHTML = `<div class="label-tag">🧠 PROFIL PEMBELAJAR</div>
+      ${Object.keys(PROFILE.dims).map(d=>dimRow(d, PROFILE.dims[d])).join('')}
+      <p class="muted" style="margin-top:8px;">Fokus latihan utama: <b>${DIM_LABEL[weakest]}</b>. Jangan risau — kita latih sedikit demi sedikit.</p>`;
+
+    const pc = document.getElementById('home-progress-card');
+    if(ESSAYS.length===0){
+      pc.innerHTML = `<p class="muted">Belum ada karangan lagi. Mula tulis karangan pertama kamu untuk lihat kemajuan!</p>`;
+    } else {
+      const last5 = ESSAYS.slice(-5);
+      const bars = last5.map((e,i)=>`<div class="wb" style="height:${Math.max(10,e.skor)}%;"><span>${e.skor}</span></div>`).join('');
+      pc.innerHTML = `<div class="week-bars">${bars}</div><div style="display:flex;gap:10px;"><div class="lbl" style="flex:1;">${last5.map(()=>'').join('')}</div></div>
+      <p class="muted">Karangan diselesaikan: <b>${PROFILE.essaysCompleted}</b> · Perenggan latihan: <b>${PROFILE.paragraphsCompleted}</b></p>`;
+    }
+  }
+
+  function dimRow(key, val){
+    return `<div class="dim-row"><div class="dim-label">${DIM_LABEL[key]}</div><div class="bar-track" style="flex:1;"><div class="bar-fill" style="width:${val}%;"></div></div><div class="dim-pct">${Math.round(val)}%</div></div>`;
+  }
+
+  function weakestDim(){
+    let min=101,minK='huraian';
+    for(const k in PROFILE.dims){ if(PROFILE.dims[k]<min){min=PROFILE.dims[k];minK=k;} }
+    return minK;
+  }
+
+  async function resetProgress(){
+    if(!confirm('Set semula semua data latihan? Tindakan ini tidak boleh dibatalkan.')) return;
+    PROFILE = DEFAULT_PROFILE();
+    ESSAYS = [];
+    ERRORJ = [];
+    await saveProfile(); await saveEssays(); await saveErrorJ();
+    location.reload();
+  }
+
+  function renderMore(){
+    const total = (PROFILE.independentCount||0)+(PROFILE.assistedCount||0);
+    const pct = total>0 ? Math.round(100*(PROFILE.independentCount||0)/total) : 0;
+    document.getElementById('more-independence-text').textContent = total>0
+      ? `${pct}% latihan kamu diselesaikan tanpa bantuan penuh AI. Teruskan begini!`
+      : `Mula berlatih untuk lihat statistik kemahiran sendiri kamu.`;
+  }
+
+  function renderProgram(){
+    const days = [
+      {n:1,t:"Kenali Tajuk", d:"Belajar memahami skop sesuatu tajuk karangan."},
+      {n:2,t:"Cari Isi", d:"Latihan menjana beberapa isi untuk satu tajuk."},
+      {n:3,t:"Isi yang Relevan", d:"Belajar membezakan isi yang berkaitan dan tidak berkaitan."},
+      {n:4,t:"Huraian Asas", d:"Latihan menghuraikan sesuatu isi dengan lebih jelas."},
+      {n:5,t:"Teknik Contoh", d:"Belajar memberi contoh yang khusus dan sesuai."},
+      {n:6,t:"Kesan", d:"Latihan menyatakan kesan sesuatu perkara."},
+      {n:7,t:"Boss Challenge", d:"Cabaran menggabungkan isi, huraian, contoh dan kesan."}
+    ];
+    const list = document.getElementById('program-list');
+    const unlockedDay = Math.min(7, 1 + (PROFILE.paragraphsCompleted||0));
+    list.innerHTML = days.map(d=>{
+      const locked = d.n > unlockedDay;
+      return `<div class="card" style="${locked?'opacity:.5;':'cursor:pointer;'}" ${locked?'':`onclick="App.launchProgramDay(${d.n})"`}>
+        <div class="label-tag">HARI ${d.n}</div>
+        <h3>${d.t}</h3>
+        <p class="muted">${d.d}</p>
+        ${locked?'<p class="muted">🔒 Selesaikan hari sebelum ini untuk buka.</p>':''}
+      </div>`;
+    }).join('') + `<div class="card" style="opacity:.5;"><h3>Hari 8 - 30</h3><p class="muted">Akan dibuka mengikut kemajuan kamu. Modul ini terus dikemas kini.</p></div>`;
+  }
+
+  function launchProgramDay(n){
+    Paragraph.startRandom();
+  }
+
+  function openErrorJournal(){ Nav.go('errorjournal'); }
+  function renderErrorJournal(){
+    const el = document.getElementById('errorjournal-list');
+    if(ERRORJ.length===0){ el.innerHTML = `<p class="muted">Belum ada kesilapan direkodkan lagi. Bagus!</p>`; return; }
+    el.innerHTML = ERRORJ.slice().reverse().map(e=>`
+      <div class="card">
+        <div style="color:var(--red);text-decoration:line-through;">❌ ${escapeHtml(e.asal)}</div>
+        <div style="color:var(--teal);font-weight:700;margin:4px 0;">✅ ${escapeHtml(e.cadangan)}</div>
+        <div class="muted">${escapeHtml(e.sebab||'')}</div>
+      </div>`).join('');
+  }
+
+  return {setConfidence, enterHome, startTodayMission, backToHomeFromMission, refreshHome, resetProgress, renderMore, renderProgram, launchProgramDay, openErrorJournal, renderErrorJournal, weakestDim};
+})();
+
+const DIM_LABEL = {idea:"💡 Idea", huraian:"🧠 Huraian", ayat:"✍️ Ayat", bahasa:"📚 Bahasa", struktur:"🏗️ Struktur"};
+
+function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+
+/* ============================================================
+   DIAGNOSTIC
+   ============================================================ */
+const Diagnostic = (() => {
+  const TOPIC = "Faedah bersukan kepada murid.";
+  const TASKS = [
+    {label:"TUGASAN 1 — FAHAM TAJUK", q:"Apakah perkara utama yang perlu kamu bincangkan?"},
+    {label:"TUGASAN 2 — JANA ISI", q:"Berikan 3 isi.", topic:TOPIC},
+    {label:"TUGASAN 3 — HURAIAN", q:"Bersukan dapat menyihatkan badan. Cuba huraikan."},
+    {label:"TUGASAN 4 — CONTOH", q:"Berikan satu contoh yang sesuai."},
+    {label:"TUGASAN 5 — PENUTUP", q:"Tulis satu ayat penutup."}
+  ];
+  let idx=0, answers=[];
+
+  function start(){
+    idx=0; answers=[];
+    Nav.go('diag');
+    document.getElementById('diag-topic').textContent = TOPIC;
+    render();
+  }
+  function render(){
+    document.getElementById('diag-step-pill').textContent = `${idx+1}/5`;
+    document.getElementById('diag-tasklabel').textContent = TASKS[idx].label;
+    document.getElementById('diag-question').textContent = TASKS[idx].q;
+    document.getElementById('diag-input').value = '';
+    const dots = document.getElementById('diag-dots');
+    dots.innerHTML = TASKS.map((_,i)=>`<span class="${i<=idx?'on':''}"></span>`).join('');
+    document.getElementById('diag-next-btn').textContent = idx===TASKS.length-1 ? 'Selesai' : 'Seterusnya';
+  }
+  async function next(){
+    const val = document.getElementById('diag-input').value.trim();
+    answers.push(val);
+    if(idx < TASKS.length-1){
+      idx++; render();
+    } else {
+      Nav.go('diag-loading');
+      await finish();
+    }
+  }
+  async function finish(){
+    const results = [];
+    for(let i=0;i<TASKS.length;i++){
+      const r = await EssayCoachService.evaluateDiagnosticAnswer(TASKS[i].label, TOPIC, TASKS[i].q, answers[i]);
+      results.push(r);
+    }
+    // map 5 tasks -> 5 dims approx: [faham topik->idea, jana isi->idea, huraian->huraian, contoh->ayat/bahasa, penutup->struktur]
+    const dims = {
+      idea: Math.round((results[0].score+results[1].score)/2),
+      huraian: results[2].score,
+      ayat: results[3].score,
+      bahasa: Math.round((results[3].score+results[1].score)/2),
+      struktur: results[4].score
+    };
+    PROFILE.dims = dims;
+    PROFILE.diagnosticDone = true;
+    await saveProfile();
+    renderResult(dims, results);
+    Nav.go('diag-result');
+  }
+  function renderResult(dims, results){
+    const card = document.getElementById('diag-result-card');
+    card.innerHTML = Object.keys(dims).map(k=>App_dimRowStandalone(k,dims[k])).join('');
+    const weakest = Object.keys(dims).reduce((a,b)=>dims[a]<dims[b]?a:b);
+    document.getElementById('diag-focus-box').innerHTML = `<b>🎯 Fokus latihan utama: ${DIM_LABEL[weakest]}</b><br>Jangan risau. Kita akan latih kemahiran ini sedikit demi sedikit.`;
+  }
+  function App_dimRowStandalone(key,val){
+    return `<div class="dim-row"><div class="dim-label">${DIM_LABEL[key]}</div><div class="bar-track" style="flex:1;"><div class="bar-fill" style="width:${val}%;"></div></div><div class="dim-pct">${Math.round(val)}%</div></div>`;
+  }
+  return {start, next};
+})();
+
+/* ============================================================
+   PARAGRAPH BUILDER (I-H-C-K)
+   ============================================================ */
+const Paragraph = (() => {
+  const STEPS = [
+    {key:'isi', ic:'💡', q:'Apakah isi kamu?'},
+    {key:'huraian', ic:'🧠', q:'Mengapa perkara ini penting?'},
+    {key:'contoh', ic:'📌', q:'Berikan contoh.'},
+    {key:'kesan', ic:'🎯', q:'Apakah kesannya?'}
+  ];
+  let step=0, topic='', values={isi:'',huraian:'',contoh:'',kesan:''}, usedHelp=false;
+
+  function startRandom(){
+    const q = QUESTION_BANK[Math.floor(Math.random()*QUESTION_BANK.length)];
+    start(q.topic);
+  }
+  function start(t){
+    topic = t; step=0; values={isi:'',huraian:'',contoh:'',kesan:''}; usedHelp=false;
+    document.getElementById('para-topic').textContent = topic;
+    document.getElementById('para-idk-panel').classList.add('hidden');
+    document.getElementById('para-idk-panel').innerHTML='';
+    render();
+    Nav.go('paragraph');
+  }
+  function render(){
+    const s = STEPS[step];
+    document.getElementById('para-dots').innerHTML = STEPS.map((_,i)=>`<span class="${i<=step?'on':''}"></span>`).join('');
+    const wrap = document.getElementById('para-steps');
+    wrap.innerHTML = `<div class="card">
+      <div class="label-tag">${s.ic} LANGKAH ${step+1}/4</div>
+      <h3>${s.q}</h3>
+      <textarea id="para-input" rows="3" placeholder="Taip di sini...">${escapeHtml(values[s.key])}</textarea>
+    </div>`;
+    document.getElementById('para-back-btn').style.visibility = step===0 ? 'hidden' : 'visible';
+    document.getElementById('para-next-btn').textContent = step===STEPS.length-1 ? 'Semak Perenggan' : 'Seterusnya →';
+  }
+  function saveCurrent(){
+    const s = STEPS[step];
+    values[s.key] = document.getElementById('para-input').value;
+  }
+  function back(){
+    saveCurrent();
+    if(step>0){ step--; render(); }
+  }
+  async function next(){
+    saveCurrent();
+    if(step < STEPS.length-1){ step++; render(); }
+    else { await finish(); }
+  }
+  function dontKnow(){
+    usedHelp = true;
+    const panel = document.getElementById('para-idk-panel');
+    panel.classList.remove('hidden');
+    panel.innerHTML = `<p class="muted">Adakah topik ini berkaitan dengan...</p>
+      <div class="chip-grid">
+        <span class="chip" onclick="Paragraph.hintCategory('sekolah')">🏫 Sekolah</span>
+        <span class="chip" onclick="Paragraph.hintCategory('keluarga')">👨‍👩‍👧 Keluarga</span>
+        <span class="chip" onclick="Paragraph.hintCategory('alam sekitar')">🌱 Alam sekitar</span>
+        <span class="chip" onclick="Paragraph.hintCategory('kesihatan')">❤️ Kesihatan</span>
+        <span class="chip" onclick="Paragraph.hintCategory('teknologi')">💻 Teknologi</span>
+        <span class="chip" onclick="Paragraph.hintCategory('masyarakat')">🤝 Masyarakat</span>
+      </div>
+      <div id="para-hint-out" style="margin-top:10px;"></div>`;
+  }
+  async function hintCategory(cat){
+    const out = document.getElementById('para-hint-out');
+    out.innerHTML = `<div class="coach-box">Sedang fikir...</div>`;
+    const hint = await EssayCoachService.generateHint(topic+" ("+cat+")", 2);
+    out.innerHTML = `<div class="coach-box"><b>💡 Jurulatih:</b> ${escapeHtml(hint)}</div>`;
+  }
+  async function finish(){
+    Nav.go('para-result');
+    document.getElementById('para-final-text').textContent = 'Sedang menyusun perenggan...';
+    document.getElementById('para-feedback-area').innerHTML = `<div class="coach-box">Jurulatih Karangan sedang menyemak perenggan kamu...</div>`;
+    const combined = `${values.isi} ${values.huraian} Contohnya, ${values.contoh}. ${values.kesan}`;
+    document.getElementById('para-final-text').textContent = combined;
+    const fb = await EssayCoachService.analyseParagraph(topic, values);
+    renderFeedback(fb);
+    PROFILE.paragraphsCompleted = (PROFILE.paragraphsCompleted||0)+1;
+    checkBadges();
+    await saveProfile();
+    await awardXP(fb.xp||30, '· Perenggan Selesai', usedHelp?{assisted:true}:{independent:true});
+  }
+  function renderFeedback(fb){
+    const area = document.getElementById('para-feedback-area');
+    const labelClass = {good:'good',improve:'improve',fix:'fix'};
+    const sentencesHtml = (fb.sentences||[]).map(s=>
+      `<div class="sentence-fb ${labelClass[s.label]||'improve'}" style="margin-bottom:6px;padding:8px;"><b>${s.part.toUpperCase()}</b>: ${escapeHtml(s.comment)}</div>`
+    ).join('');
+    area.innerHTML = `
+      <div class="card">
+        <div class="label-tag">Jom kita periksa</div>
+        ${sentencesHtml}
+      </div>
+      <div class="card">
+        <h3>🌟 Apa yang kamu buat dengan baik</h3>
+        <ul style="padding-left:18px;margin:0;">${(fb.strengths||[]).map(s=>`<li class="muted">${escapeHtml(s)}</li>`).join('')}</ul>
+      </div>
+      <div class="card">
+        <h3>🎯 Untuk ditingkatkan</h3>
+        <ul style="padding-left:18px;margin:0;">${(fb.improvements||[]).map(s=>`<li class="muted">${escapeHtml(s)}</li>`).join('')}</ul>
+      </div>
+      <div class="card coach-box"><b>🚀 Cabaran seterusnya:</b> ${escapeHtml(fb.next_challenge||'')}</div>
+      ${fb.offline?'<div class="offline-note">Jurulatih AI memerlukan sambungan internet untuk analisis penuh — ini analisis ringkas mod luar talian.</div>':''}
+    `;
+  }
+  return {startRandom, start, back, next, dontKnow, hintCategory};
+})();
+
+/* ============================================================
+   ESSAY EDITOR
+   ============================================================ */
+const Essay = (() => {
+  let currentTopic = QUESTION_BANK[0].topic;
+  let saveTimer=null;
+
+  async function open(){
+    document.getElementById('essay-topic').textContent = currentTopic;
+    const draft = await Store.get('essay-draft', {topic:currentTopic, text:''});
+    if(draft.topic===currentTopic){ document.getElementById('essay-editor').value = draft.text; }
+    updateWordCount();
+  }
+  function onInput(){
+    updateWordCount();
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(async ()=>{
+      await Store.set('essay-draft', {topic:currentTopic, text:document.getElementById('essay-editor').value});
+      document.getElementById('essay-saved-note').textContent = 'Draf disimpan ✓';
+    }, 600);
+  }
+  function updateWordCount(){
+    const text = document.getElementById('essay-editor').value;
+    const words = text.trim().split(/\s+/).filter(Boolean).length;
+    const paras = text.split(/\n+/).filter(p=>p.trim().length>0).length;
+    document.getElementById('essay-wordcount').textContent = `${words} patah perkataan`;
+    const tags = document.getElementById('essay-status-tags');
+    const introOk = paras>=1;
+    const isiOk = words>60;
+    const concOk = /kesimpulan|akhir kata|justeru|rumusnya|harapan/i.test(text.slice(-200));
+    tags.innerHTML = `
+      <span class="tag ${introOk?'g':'r'}">${introOk?'🟢':'🔴'} Pendahuluan</span>
+      <span class="tag ${isiOk?'g':'y'}">${isiOk?'🟢':'🟡'} Isi</span>
+      <span class="tag ${concOk?'g':'y'}">${concOk?'🟢':'🟡'} Penutup</span>
+      <span class="tag">📄 ${paras} perenggan</span>`;
+  }
+  function setTopic(t){
+    currentTopic = t;
+    document.getElementById('essay-editor').value = '';
+    open();
+  }
+  async function analyse(){
+    const text = document.getElementById('essay-editor').value.trim();
+    if(text.split(/\s+/).filter(Boolean).length < 20){
+      alert('Tulis sedikit lagi sebelum semak (sekurang-kurangnya 20 patah perkataan).');
+      return;
+    }
+    Nav.go('essay-loading');
+    const fb = await EssayCoachService.analyseEssay(currentTopic, text);
+    // update profile dims via EMA
+    if(fb.dimensi){
+      for(const k in fb.dimensi){
+        if(PROFILE.dims[k]!==undefined){ PROFILE.dims[k] = Math.round(PROFILE.dims[k]*0.6 + fb.dimensi[k]*0.4); }
+      }
+    }
+    PROFILE.essaysCompleted = (PROFILE.essaysCompleted||0)+1;
+    const record = {id:Date.now(), date:todayStr(), topic:currentTopic, text, skor:fb.skor_latihan_ai, fb};
+    ESSAYS.push(record);
+    if(fb.kesalahan && fb.kesalahan.length){
+      fb.kesalahan.forEach(k=> ERRORJ.push({asal:k.asal, cadangan:k.cadangan, sebab:k.sebab}));
+      await saveErrorJ();
+    }
+    checkBadges();
+    await saveProfile(); await saveEssays();
+    await awardXP(fb.xp||70, '· Karangan Selesai', {independent:true});
+    renderFeedback(fb, record);
+    Nav.go('essay-feedback');
+    await Store.set('essay-draft', {topic:currentTopic, text:''});
+  }
+  function renderFeedback(fb, record){
+    const el = document.getElementById('essay-feedback-content');
+    const dims = fb.dimensi || {};
+    el.innerHTML = `
+      <div class="card" style="text-align:center;background:var(--ink);color:#fff;border:none;">
+        <div class="label-tag" style="background:rgba(255,255,255,.15);color:#fff;">SKOR LATIHAN AI</div>
+        <div style="font-size:44px;font-family:'Fraunces',serif;font-weight:700;">${fb.skor_latihan_ai}</div>
+        <p class="muted" style="color:#cdd3e6;">Ini ialah skor latihan, bukan skor rasmi PKSK.</p>
+      </div>
+      <div class="card">${Object.keys(dims).map(k=>`<div class="dim-row"><div class="dim-label">${DIM_LABEL[k]||k}</div><div class="bar-track" style="flex:1;"><div class="bar-fill" style="width:${dims[k]}%;"></div></div><div class="dim-pct">${dims[k]}%</div></div>`).join('')}</div>
+      <div class="card"><h3>🌟 Apa yang kamu buat dengan baik</h3><ul style="padding-left:18px;margin:0;">${(fb.kelebihan||[]).map(s=>`<li class="muted">${escapeHtml(s)}</li>`).join('')}</ul></div>
+      <div class="card"><h3>🎯 3 perkara untuk ditingkatkan</h3><ul style="padding-left:18px;margin:0;">${(fb.penambahbaikan||[]).map(s=>`<li class="muted">${escapeHtml(s)}</li>`).join('')}</ul></div>
+      ${(fb.kesalahan&&fb.kesalahan.length)?`<div class="card"><h3>✍️ Show Me Why</h3>${fb.kesalahan.map(k=>`
+        <div style="margin-bottom:10px;">
+          <div style="color:var(--red);">❌ ${escapeHtml(k.asal)}</div>
+          <div class="muted">💡 ${escapeHtml(k.sebab)}</div>
+          <div style="color:var(--teal);font-weight:700;">✅ ${escapeHtml(k.cadangan)}</div>
+        </div>`).join('')}</div>`:''}
+      <div class="card coach-box"><b>🚀 Cabaran seterusnya:</b> ${escapeHtml(fb.cabaran_seterusnya||'')}</div>
+      ${fb.offline?'<div class="offline-note">Jurulatih AI memerlukan sambungan internet untuk analisis penuh — ini anggaran mod luar talian.</div>':''}
+    `;
+  }
+  return {open, onInput, setTopic, analyse, get currentTopic(){return currentTopic;}};
+})();
+
+/* ============================================================
+   QUESTION BANK VIEW
+   ============================================================ */
+const Bank = (() => {
+  function render(){
+    const el = document.getElementById('bank-list');
+    el.innerHTML = QUESTION_BANK.map(q=>`
+      <div class="card">
+        <div class="label-tag ${q.tahap==='Boss'?'warn':''}">${q.tema.toUpperCase()} · ${q.tahap}</div>
+        <h3>${q.topic}</h3>
+        <div class="btn-row">
+          <button class="btn-sm btn-outline" onclick='Paragraph.start(${JSON.stringify(q.topic)})'>Latih Perenggan</button>
+          <button class="btn-sm btn-teal" onclick='Essay.setTopic(${JSON.stringify(q.topic)});Nav.go("essay")'>Tulis Karangan</button>
+        </div>
+      </div>`).join('');
+  }
+  function randomiseForEssay(){
+    const q = QUESTION_BANK[Math.floor(Math.random()*QUESTION_BANK.length)];
+    Essay.setTopic(q.topic);
+  }
+  return {render, randomiseForEssay};
+})();
+
+/* ============================================================
+   EXAM (SIMULASI PKSK)
+   ============================================================ */
+const Exam = (() => {
+  let timeLeft = 40*60, timerId=null, topic='';
+  function render(){
+    topic = QUESTION_BANK[Math.floor(Math.random()*QUESTION_BANK.length)].topic;
+    document.getElementById('exam-topic-box').textContent = 'TAJUK SIMULASI';
+    document.getElementById('exam-topic-title').textContent = topic;
+    document.getElementById('exam-timer-display').textContent = '40:00';
+    document.getElementById('exam-start-btn').classList.remove('hidden');
+    document.getElementById('exam-editor').classList.add('hidden');
+    document.getElementById('exam-submit-btn').classList.add('hidden');
+    document.getElementById('exam-editor').value='';
+    timeLeft = 40*60;
+    clearInterval(timerId);
+  }
+  function start(){
+    document.getElementById('exam-start-btn').classList.add('hidden');
+    document.getElementById('exam-editor').classList.remove('hidden');
+    document.getElementById('exam-submit-btn').classList.remove('hidden');
+    timerId = setInterval(()=>{
+      timeLeft--;
+      const m = Math.floor(timeLeft/60), s=timeLeft%60;
+      document.getElementById('exam-timer-display').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+      if(timeLeft<=0){ clearInterval(timerId); submit(); }
+    },1000);
+  }
+  function onInput(){}
+  async function submit(){
+    clearInterval(timerId);
+    const text = document.getElementById('exam-editor').value.trim();
+    if(text.split(/\s+/).filter(Boolean).length<10){ Nav.go('home'); return; }
+    Nav.go('essay-loading');
+    const fb = await EssayCoachService.analyseEssay(topic, text);
+    const record = {id:Date.now(), date:todayStr(), topic:'[Simulasi] '+topic, text, skor:fb.skor_latihan_ai, fb};
+    ESSAYS.push(record);
+    PROFILE.essaysCompleted=(PROFILE.essaysCompleted||0)+1;
+    checkBadges();
+    await saveProfile(); await saveEssays();
+    await awardXP((fb.xp||70)+30, '· Simulasi Selesai', {independent:true});
+    Essay_renderExamFeedback(fb);
+    Nav.go('essay-feedback');
+  }
+  function Essay_renderExamFeedback(fb){
+    // reuse essay feedback renderer
+    const record = {};
+    const el = document.getElementById('essay-feedback-content');
+    Essay.analyseAlreadyRendered = true;
+    // Manually call the internal renderer via a temp trick: reuse function logic
+    const evt = new CustomEvent('noop');
+    // simplest: call same html generation inline
+    document.getElementById('essay-feedback-content').innerHTML = '';
+    RenderSharedFeedback(fb);
+  }
+  function RenderSharedFeedback(fb){
+    const el = document.getElementById('essay-feedback-content');
+    const dims = fb.dimensi || {};
+    el.innerHTML = `
+      <div class="card" style="text-align:center;background:var(--ink);color:#fff;border:none;">
+        <div class="label-tag" style="background:rgba(255,255,255,.15);color:#fff;">SKOR LATIHAN AI (SIMULASI)</div>
+        <div style="font-size:44px;font-family:'Fraunces',serif;font-weight:700;">${fb.skor_latihan_ai}</div>
+      </div>
+      <div class="card">${Object.keys(dims).map(k=>`<div class="dim-row"><div class="dim-label">${DIM_LABEL[k]||k}</div><div class="bar-track" style="flex:1;"><div class="bar-fill" style="width:${dims[k]}%;"></div></div><div class="dim-pct">${dims[k]}%</div></div>`).join('')}</div>
+      <div class="card"><h3>🌟 Kekuatan</h3><ul style="padding-left:18px;margin:0;">${(fb.kelebihan||[]).map(s=>`<li class="muted">${escapeHtml(s)}</li>`).join('')}</ul></div>
+      <div class="card"><h3>🎯 Untuk ditingkatkan</h3><ul style="padding-left:18px;margin:0;">${(fb.penambahbaikan||[]).map(s=>`<li class="muted">${escapeHtml(s)}</li>`).join('')}</ul></div>
+      <div class="card coach-box"><b>🚀 Cabaran seterusnya:</b> ${escapeHtml(fb.cabaran_seterusnya||'')}</div>`;
+  }
+  return {render, start, onInput, submit};
+})();
+
+/* ============================================================
+   HISTORY
+   ============================================================ */
+const History = (() => {
+  function render(){
+    const el = document.getElementById('history-list');
+    if(ESSAYS.length===0){ el.innerHTML = `<p class="muted">Belum ada karangan lagi.</p>`; return; }
+    el.innerHTML = ESSAYS.slice().reverse().map(e=>`
+      <div class="card">
+        <div class="label-tag">${e.date}</div>
+        <h3>${escapeHtml(e.topic)}</h3>
+        <div class="bar-track"><div class="bar-fill" style="width:${e.skor}%;"></div></div>
+        <p class="muted">Skor Latihan AI: <b>${e.skor}</b></p>
+      </div>`).join('');
+  }
+  return {render};
+})();
+
+/* ============================================================
+   PARENT DASHBOARD
+   ============================================================ */
+const Parent = (() => {
+  async function render(){
+    const now = Date.now();
+    const weekEssays = ESSAYS.filter(e => now - e.id < 7*24*3600*1000);
+    const avgBefore = weekEssays.length>1 ? weekEssays[0].skor : (weekEssays[0]?weekEssays[0].skor:0);
+    const avgAfter = weekEssays.length ? weekEssays[weekEssays.length-1].skor : 0;
+    const weakest = App.weakestDim();
+    const strongest = Object.keys(PROFILE.dims).reduce((a,b)=>PROFILE.dims[a]>PROFILE.dims[b]?a:b);
+    const el = document.getElementById('parent-content');
+    el.innerHTML = `
+      <div class="card">
+        <div class="label-tag">LAPORAN MINGGUAN</div>
+        <div class="dim-row"><div class="dim-label">Karangan</div><div style="font-weight:700;">${weekEssays.length}</div></div>
+        <div class="dim-row"><div class="dim-label">Purata skor</div><div style="font-weight:700;">${avgBefore} → ${avgAfter}</div></div>
+        <div class="dim-row"><div class="dim-label">Kekuatan</div><div style="font-weight:700;">${DIM_LABEL[strongest]}</div></div>
+        <div class="dim-row"><div class="dim-label">Perlu fokus</div><div style="font-weight:700;">${DIM_LABEL[weakest]}</div></div>
+        <div class="dim-row"><div class="dim-label">Streak semasa</div><div style="font-weight:700;">🔥 ${PROFILE.streak} hari</div></div>
+      </div>
+      <div class="card coach-box" id="parent-message">Sedang menjana mesej galakan...</div>
+      <p class="muted" style="text-align:center;">Fokus kepada peningkatan, bukan kesempurnaan.</p>
+    `;
+    const msg = await EssayCoachService.parentMessage({essaysThisWeek: weekEssays.length, avgBefore, avgAfter, weakest, strongest});
+    document.getElementById('parent-message').innerHTML = `<b>💬 Mesej untuk ibu bapa:</b><br>${escapeHtml(msg)}`;
+  }
+  return {render};
+})();
+
+/* ============================================================
+   BOOTSTRAP
+   ============================================================ */
+const _navGoOrig = Nav.go;
+Nav.go = function(screen){
+  _navGoOrig(screen);
+  if(screen==='exam'){ Exam.render(); }
+  if(screen==='essay'){ Essay.open(); }
+};
+
+async function boot(){
+  await loadState();
+  if(PROFILE.diagnosticDone){
+    App.enterHome();
+  }
+}
+boot();
+</script>
+</body>
+</html>
